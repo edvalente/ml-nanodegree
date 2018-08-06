@@ -2,6 +2,9 @@
 # Supervised Learning
 ## Project: Finding Donors for CharityML
 
+ - Name: Edgar Valente
+ - Python Version: 3.6.5
+
 ### Install
 
 This project requires **Python 2.7** and the following Python libraries installed:
