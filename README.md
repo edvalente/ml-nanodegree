@@ -1,5 +1,7 @@
 # Machine Learning Engineer Nanodegree
 My project and annotations for this nanodegree by Udacity.
+ - Name: Edgar Valente
+ - Python Version: 3.6.5
 
 ## Project 1 - Supervised Learning
 ### Finding Donors for CharityML
