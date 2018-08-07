@@ -110,7 +110,7 @@ def evaluate(results, accuracy, f1):
     patches = []
     for i, learner in enumerate(results.keys()):
         patches.append(mpatches.Patch(color = colors[i], label = learner))
-    fig.legend(handles = patches, bbox_to_anchor = (0.5, 1.05), \
+    pl.legend(handles = patches, bbox_to_anchor = (-.80, 2.53), \
                loc = 'upper center', borderaxespad = 0., ncol = 3, fontsize = 'x-large')
     
     # Aesthetics
@@ -140,4 +140,4 @@ def feature_plot(importances, X_train, y_train):
     
     pl.legend(loc = 'upper center')
     pl.tight_layout()
-    pl.show() 
+    pl.show()  
