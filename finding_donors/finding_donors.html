@@ -12409,7 +12409,7 @@ Percentage of individuals making more than $50,000: 24.78%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: One-hot encode the &#39;features_log_minmax_transform&#39; data using pandas.get_dummies()</span>
@@ -12462,7 +12462,7 @@ Percentage of individuals making more than $50,000: 24.78%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import train_test_split</span>
@@ -12552,7 +12552,7 @@ It is a ratio of true positives(words classified as spam, and which are actually
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[49]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Counting the ones as this is the naive case.</span>
@@ -12566,15 +12566,16 @@ It is a ratio of true positives(words classified as spam, and which are actually
 
 <span class="c1"># TODO: Calculate accuracy, precision and recall</span>
 <span class="n">accuracy</span> <span class="o">=</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">TN</span><span class="p">)</span> <span class="o">/</span> <span class="n">income</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="c1"># TN == 0</span>
-<span class="n">recall</span> <span class="o">=</span> <span class="n">TP</span> <span class="o">/</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FP</span><span class="p">)</span> <span class="c1"># FN == 0 | recall == 1</span>
-<span class="n">precision</span> <span class="o">=</span> <span class="n">TP</span> <span class="o">/</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FN</span><span class="p">)</span> <span class="c1"># precision == accuracy</span>
+<span class="n">recall</span> <span class="o">=</span> <span class="n">TP</span> <span class="o">/</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FN</span><span class="p">)</span> <span class="c1"># FN == 0 | recall == 1</span>
+<span class="n">precision</span> <span class="o">=</span> <span class="n">TP</span> <span class="o">/</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FP</span><span class="p">)</span> <span class="c1"># precision == accuracy</span>
 
 <span class="c1"># TODO: Calculate F-score using the formula above for beta = 0.5 and correct values for precision and recall.</span>
-<span class="n">fscore</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">precision</span> <span class="o">*</span> <span class="n">recall</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">precision</span> <span class="o">+</span> <span class="n">recall</span><span class="p">)</span>
+<span class="n">beta_2</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">fscore</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">beta_2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">precision</span> <span class="o">*</span> <span class="n">recall</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="n">beta_2</span> <span class="o">*</span> <span class="n">precision</span><span class="p">)</span> <span class="o">+</span> <span class="n">recall</span><span class="p">)</span>
 
 <span class="c1"># Print the results </span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Naive Predictor: [Accuracy score: </span><span class="si">{:.4f}</span><span class="s2">, F-score: </span><span class="si">{:.4f}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">fscore</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Total guesses: </span><span class="si">{}</span><span class="s2">]; [Total 1s: </span><span class="si">{}</span><span class="s2">]; [Total 0s: </span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">income</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="n">income</span><span class="p">[</span><span class="n">income</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="n">income</span><span class="p">[</span><span class="n">income</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()))</span>
+<span class="c1"># print(&quot;[Total guesses: {}]; [Total 1s: {}]; [Total 0s: {}]&quot;.format(income.count(), income[income == 1].count(), income[income == 0].count()))</span>
 </pre></div>
 
 </div>
@@ -12591,8 +12592,7 @@ It is a ratio of true positives(words classified as spam, and which are actually
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Naive Predictor: [Accuracy score: 0.2478, F-score: 0.6223]
-[Total guesses: 45222]; [Total 1s: 11208]; [Total 0s: 34014]
+<pre>Naive Predictor: [Accuracy score: 0.2478, F-score: 0.2917]
 </pre>
 </div>
 </div>
@@ -12980,8 +12980,8 @@ Look at the graph at the bottom left from the cell above(the visualization creat
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong></p>
-<p>We have to classify people's salary based on a few characteristics in our dataset. More specifically, if the annual salary is lower or higher than 50,000. That might sound difficult, but we have a lot of small intuitive algorithms that can tell slightly better than randomly if a person looks like it has one or the other kind of salary. Every time we ask one of the algorithms their opinion on the classification based on the characteristics provided, we check what it correctly classified and emphasize the ones it missed when asking the next algorithm its opinion, so it'll make sure to take notice of those characteristics. Eventually, by having a lot of different conclusions, each progressively taking more notice to what is commonly missed, we get some common ones, and we make them our ground rules for identifying the salary of a person.</p>
-<p>To make sure our ground rules work, we only ask the opinion for 80% of our data, making it our Training Set. The rest (20%) will be used to make the predictions to check if our ground rules make sense for any data that comes in, and not only for the data trained.</p>
+<p>We have to classify people's salary based on a few characteristics in our dataset. More specifically, if the annual salary is lower or higher than 50,000. Now, suppose you come from the other side of the world and knows nothing of the culture here and how people's income work. If someone were to ask you to guess at someone's annual income, you would probably make a <strong>random guess</strong>. You would pick either one or the other with 50% chance. Now, let's say you gathered 5 people to take their guesses at people's salary. The first one is a young man that has an aunt working at a school. He knows her age, her position and her annual salary. If you asked him to look at our data and guess at some people's annual income and two of them were similar to his aunt, his guess would be a <strong>little bit better than random</strong>. He would probably be right about these two people, thus being trustful about classifying this specific type of people, for in this he has some expertise, hence being our first <strong>weak learner</strong>. Each of our next 4 guessing candidates have some small expertise in some of the characteristics in our dataset and, as a whole, we can combine their individual knowledge to create a full expert at guessing people's annual income. In our case, weak learners will be Decision Trees, which will create rules of thumb for their area of expertise. As an example, our first learner would say <em>"Ok, based on what I know, if a person is above 35 years old and is at least a director at a school, he'll make an annual income higher than 50k"</em>. This is quite specific, but there's no problem in it, for we will have a lot of Decision Trees, and thus a lot of ground rules.</p>
+<p>That might sound difficult but, using our AdaBoost model, we have <strong>a lot</strong> of small intuitive weak learners (algorithms) that can tell slightly better than randomly if a person looks like it has one or the other kind of salary. Every time we ask one of the learner their opinion on the classification based on the characteristics provided, we check what it correctly classified and emphasize the ones it missed when asking the next learner its opinion, so it'll make sure to take notice of them. This is important because we already have some other expertises filled, and now we need to focus on what we are still not sure about. Eventually, by having a lot of different conclusions, each progressively taking more notice to what is commonly missed, we get some common rules for classification, and we make them our ground rules for identifying the salary of a person. To make sure our ground rules work, we only ask the opinion for 80% of our data, making it our Training Set. The rest (20%) will be used to make the predictions to check if our ground rules make sense for any data that comes in, and not only for the data trained.</p>
 
 </div>
 </div>
@@ -13054,7 +13054,7 @@ Look at the graph at the bottom left from the cell above(the visualization creat
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;F-score on testing data: </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fbeta_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Optimized Model</span><span class="se">\n</span><span class="s2">------&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final accuracy score on the testing data: </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">best_predictions</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final F-score on the testing data: </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fbeta_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">best_predictions</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final F-score on the testing data: </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fbeta_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">best_predictions</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)))</span>
 </pre></div>
 
 </div>
@@ -13111,6 +13111,7 @@ Final F-score on the testing data: 0.7358
 <th style="text-align:center">Metric</th>
 <th style="text-align:center">Unoptimized Model</th>
 <th style="text-align:center">Optimized Model</th>
+<th style="text-align:center">Naive Model</th>
 </tr>
 </thead>
 <tbody>
@@ -13118,11 +13119,13 @@ Final F-score on the testing data: 0.7358
 <td style="text-align:center">Accuracy Score</td>
 <td style="text-align:center">0.8373</td>
 <td style="text-align:center">0.8645</td>
+<td style="text-align:center">0.2478</td>
 </tr>
 <tr>
 <td style="text-align:center">F-score</td>
 <td style="text-align:center">0.6680</td>
 <td style="text-align:center">0.7358</td>
+<td style="text-align:center">0.2916</td>
 </tr>
 </tbody>
 </table>
@@ -13135,8 +13138,8 @@ Final F-score on the testing data: 0.7358
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong></p>
-<p>The optimized model wins in both Accuracy and F-score. Regarding the naive predictor, it wins by a large margin in Accuracy (0.86 against 0.25) and by a significant one in F-score (0.74 against 0.62).  Since we prioritized Precision, taking a beta value of 0.5, our naive model returned a relatively good F-score, as 100% of the people that make more than 50,000 of annual salary were correctly classified, but our charity would make a lot of donations to people who didn't make that salary, since it also considered everyone else as being so.</p>
-<p>Our new model has the ability to minimize that misspent money, by maintaining a good precision (also having beta 0.5) and high accuracy, not wasting those letters on all the people that won't donate.</p>
+<p>The <strong>optimized model</strong> wins in both Accuracy and F-score when compared to the <strong>unoptimized model</strong>. Now, against the <strong>naive model</strong>, it wins by a large margin in Accuracy (0.86 against 0.25) and by a significant one in F-score (0.74 against 0.29).  Since we prioritized Precision, taking a beta value of 0.5, our <strong>naive model</strong> returned a poor F-score, as it puts a higher requirement for our precision, which was the same as our Accuracy (0.25). In this previous model, 100% of the people that make more than 50,000 of annual salary were correctly classified, but our charity would make a lot of donations to people who didn't make that salary, since it also considered everyone else as being so, and we don't want that.</p>
+<p>Our <strong>new model</strong> has the ability to minimize that misspent money, by maintaining a good F-score even with a penalized precision (beta of 0.5) and high accuracy, not wasting those letters on all the people that won't donate.</p>
 
 </div>
 </div>
@@ -13263,6 +13266,7 @@ Final F-score on the testing data: 0.7358
 <li>capital-loss seem to be a huge winner feature, and I didn't consider at all. Since I don't fully understand its nature, I'd have to research further the census. It still probably has the same relationship as mentioned in capital-gain, which is placed in third place here. I believe my assumption was correct and they both are linearly correlated to the income for the reason I mentioned. I'll take that as a personal win;</li>
 <li>hours-per-week and education-num were also wins, but being a little less important than I would have thought. education-num actually makes sense being fifth ranked when seeing this graph, since it's probably slightly correlated to age, but a lot less important for classification;</li>
 <li>I see that my assumption that continuous features were more important was correct, since every feature identified in this top 5 is continuous.</li>
+<li><strong>EDIT:</strong> This feature selection was made by using the "gini" criterion (impurity), default in DecisionTreeClassifier, as opposed to the "entropy" (information gain) alternative. Different features might have been found in that case, or even with another algorithm, such as RF, as mentioned by the mentor in the review of the project.</li>
 </ul>
 
 </div>
