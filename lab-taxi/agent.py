@@ -16,6 +16,8 @@ class Agent:
         self.nA = nA
         self.Q = defaultdict(lambda: np.zeros(self.nA))
         self.i_episode = 1
+        self.alpha = 0.1
+        self.gamma = 0.9
 
     def select_action(self, state):
         """ Given the state, select an action.
@@ -28,7 +30,7 @@ class Agent:
         =======
         - action: an integer, compatible with the task's action space
         """
-        epsilon = 1 / self.i_episode
+        epsilon = 1 / (1 + self.i_episode/25)
         policy_s = np.ones(self.nA) * epsilon / self.nA
         policy_s[np.argmax(self.Q[state])] = 1 - epsilon + (epsilon / self.nA)
         
@@ -47,6 +49,4 @@ class Agent:
         """
         if done:
             self.i_episode += 1
-        alpha = 1
-        gamma = 1
-        self.Q[state][action] = update_Q(self.Q[state][action], np.max(self.Q[next_state]), reward, alpha, gamma)
+        self.Q[state][action] = update_Q(self.Q[state][action], np.max(self.Q[next_state]), reward, self.alpha, self.gamma)
