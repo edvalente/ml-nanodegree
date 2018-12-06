@@ -30,6 +30,12 @@ class DDPG():
         self.critic_target.model.set_weights(self.critic_local.model.get_weights())
         self.actor_target.model.set_weights(self.actor_local.model.get_weights())
 
+        # Score - added
+        self.score = 0
+        self.best_score = -np.inf
+        self.total_reward = 0
+        self.count = 0
+        
         # Noise process
         self.exploration_mu = 0
         self.exploration_theta = 0.15
@@ -43,15 +49,20 @@ class DDPG():
 
         # Algorithm parameters
         self.gamma = 0.99  # discount factor
-        self.tau = 0.01  # for soft update of target parameters
+        self.tau = 0.001  # for soft update of target parameters
 
     def reset_episode(self):
+        self.count = 0 # added
+        self.total_reward = 0.0 # added
         self.noise.reset()
         state = self.task.reset()
         self.last_state = state
         return state
 
     def step(self, action, reward, next_state, done):
+        self.count += 1 # added
+        self.total_reward += reward # added
+        
          # Save experience / reward
         self.memory.add(self.last_state, action, reward, next_state, done)
 
@@ -71,6 +82,12 @@ class DDPG():
 
     def learn(self, experiences):
         """Update policy and value parameters using given batch of experience tuples."""
+        
+        # Added
+        self.score = self.total_reward / float(self.count) if self.count else 0.0
+        if self.score > self.best_score:
+            self.best_score = self.score
+        
         # Convert experience tuples to separate arrays for each element (states, actions, rewards, etc.)
         states = np.vstack([e.state for e in experiences if e is not None])
         actions = np.array([e.action for e in experiences if e is not None]).astype(np.float32).reshape(-1, self.action_size)
