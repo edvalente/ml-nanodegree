@@ -19,7 +19,7 @@ class Task():
         self.action_repeat = 3
 
         self.state_size = self.action_repeat * 6
-        self.action_low = 100
+        self.action_low = 0
         self.action_high = 900
         self.action_size = 4
 
@@ -28,8 +28,42 @@ class Task():
 
     def get_reward(self):
         """Uses current pose of sim to return reward."""
-        reward = 1.-.3*(abs(self.sim.pose[:3] - self.target_pos)).sum()
-        reward = np.tanh(reward) # normalize reward to [-1, 1]
+        # reward = 1.0 - 0.3*(abs(self.sim.pose[:3] - self.target_pos)).sum()
+        # reward = np.tanh(reward) # normalize reward to [-1, 1]
+        # print(reward)
+        actual_pos = self.sim.pose[:3]
+        actual_x, actual_y, actual_z = self.sim.pose[:3]
+        target_x, target_y, target_z = self.target_pos
+        self.diff_x, self.diff_y, self.diff_z = abs(self.target_pos - self.sim.pose[:3])
+        self.sqrt_z = np.sqrt(actual_z / target_z)
+        self.pow_z = (actual_z / target_z) ** 2
+        self.log_z = np.log(actual_z / target_z)
+        
+        self.euclidean_distance = np.sqrt(((self.sim.pose[:3] - self.target_pos)**2).sum())
+        reward = 150 - self.euclidean_distance
+        if actual_z > target_z:
+            reward -= 50
+        
+        # Reward based on sin(z)
+        reward = np.sin(actual_z/150 * np.pi/2)
+        self.dt_z = self.stepped_z - self.previous_z
+        if self.dt_z > 0:
+            reward += 0.5
+            
+        # Reward based on z**2
+        reward = (actual_z/150)**2
+        if reward > 1:
+            reward -= 1
+        self.dt_z = self.stepped_z - self.previous_z
+        if self.dt_z > 0:
+            reward += 0.5
+            
+        # Reward based on sqrt(z)
+        reward = np.sqrt(actual_z/target_z)
+        self.dt_z = self.stepped_z - self.previous_z
+        if self.dt_z > 0:
+            reward += 0.5
+            
         return reward
 
     def step(self, rotor_speeds):
@@ -37,7 +71,9 @@ class Task():
         reward = 0
         pose_all = []
         for _ in range(self.action_repeat):
+            self.previous_z = self.sim.pose[2]
             done = self.sim.next_timestep(rotor_speeds) # update the sim pose and velocities
+            self.stepped_z = self.sim.pose[2]
             reward += self.get_reward() 
             pose_all.append(self.sim.pose)
         next_state = np.concatenate(pose_all)

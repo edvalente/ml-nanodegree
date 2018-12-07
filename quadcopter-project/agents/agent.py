@@ -5,7 +5,7 @@ from keras import backend as K
 
 from .actor import Actor
 from .critic import Critic
-from .buffer import ReplayBuffer
+from .replay_buffer import ReplayBuffer
 from .noise import OUNoise
 
 # Sample implementation
@@ -29,12 +29,6 @@ class DDPG():
         # Initialize target model parameters with local model parameters
         self.critic_target.model.set_weights(self.critic_local.model.get_weights())
         self.actor_target.model.set_weights(self.actor_local.model.get_weights())
-
-        # Score - added
-        self.score = 0
-        self.best_score = -np.inf
-        self.total_reward = 0
-        self.count = 0
         
         # Noise process
         self.exploration_mu = 0
@@ -50,19 +44,26 @@ class DDPG():
         # Algorithm parameters
         self.gamma = 0.99  # discount factor
         self.tau = 0.001  # for soft update of target parameters
+        
+        # Score
+        self.score = 0
+        self.best_score = -np.inf
+        self.total_reward = 0
+        self.count = 0
 
     def reset_episode(self):
-        self.count = 0 # added
-        self.total_reward = 0.0 # added
+        # Reset score counter
+        self.count = 0
+        self.total_reward = 0.0
+        # self.score = 0.0
+        
+        # Reset everything else
         self.noise.reset()
         state = self.task.reset()
         self.last_state = state
         return state
 
-    def step(self, action, reward, next_state, done):
-        self.count += 1 # added
-        self.total_reward += reward # added
-        
+    def step(self, action, reward, next_state, done):        
          # Save experience / reward
         self.memory.add(self.last_state, action, reward, next_state, done)
 
@@ -73,6 +74,18 @@ class DDPG():
 
         # Roll over last state and action
         self.last_state = next_state
+        
+        # Collect reward and adjust score
+        # self.score += reward
+        # if done and self.score > self.best_score:
+        #     self.best_score = self.score
+        
+        # Collect reward and adjust score
+        self.count += 1
+        self.total_reward += reward
+        self.score = self.total_reward / float(self.count) if self.count else 0.0
+        if done and self.score > self.best_score:
+            self.best_score = self.score
 
     def act(self, state):
         """Returns actions for given state(s) as per current policy."""
@@ -82,11 +95,6 @@ class DDPG():
 
     def learn(self, experiences):
         """Update policy and value parameters using given batch of experience tuples."""
-        
-        # Added
-        self.score = self.total_reward / float(self.count) if self.count else 0.0
-        if self.score > self.best_score:
-            self.best_score = self.score
         
         # Convert experience tuples to separate arrays for each element (states, actions, rewards, etc.)
         states = np.vstack([e.state for e in experiences if e is not None])
