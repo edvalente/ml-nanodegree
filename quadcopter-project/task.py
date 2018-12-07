@@ -38,31 +38,18 @@ class Task():
         self.sqrt_z = np.sqrt(actual_z / target_z)
         self.pow_z = (actual_z / target_z) ** 2
         self.log_z = np.log(actual_z / target_z)
+        self.sin_z = np.sin(actual_z / target_z * np.pi/2)
+        self.euc_dist = np.sqrt(((self.sim.pose[:3] - self.target_pos)**2).sum())
         
-        self.euclidean_distance = np.sqrt(((self.sim.pose[:3] - self.target_pos)**2).sum())
-        reward = 150 - self.euclidean_distance
-        if actual_z > target_z:
-            reward -= 50
+        # Reward
+        reward = self.pow_z
+        reward = 150 - self.euc_dist
+        if self.sim.v[2] > 0:
+            reward += 25
+        else:
+            reward -= 25
+            
         
-        # Reward based on sin(z)
-        reward = np.sin(actual_z/150 * np.pi/2)
-        self.dt_z = self.stepped_z - self.previous_z
-        if self.dt_z > 0:
-            reward += 0.5
-            
-        # Reward based on z**2
-        reward = (actual_z/150)**2
-        if reward > 1:
-            reward -= 1
-        self.dt_z = self.stepped_z - self.previous_z
-        if self.dt_z > 0:
-            reward += 0.5
-            
-        # Reward based on sqrt(z)
-        reward = np.sqrt(actual_z/target_z)
-        self.dt_z = self.stepped_z - self.previous_z
-        if self.dt_z > 0:
-            reward += 0.5
             
         return reward
 
