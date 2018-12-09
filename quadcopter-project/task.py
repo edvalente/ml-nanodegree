@@ -30,43 +30,32 @@ class Task():
         """Uses current pose of sim to return reward."""
         # reward = 1.0 - 0.3*(abs(self.sim.pose[:3] - self.target_pos)).sum()
         # reward = np.tanh(reward) # normalize reward to [-1, 1]
-        # print(reward)
-        actual_pos = self.sim.pose[:3]
         actual_x, actual_y, actual_z = self.sim.pose[:3]
         target_x, target_y, target_z = self.target_pos
-        # self.diff_x, self.diff_y, self.diff_z = abs(self.target_pos - self.sim.pose[:3])
-        # self.sqrt_z = np.sqrt(actual_z / target_z)
-        # self.pow_z = (actual_z / target_z) ** 2
-        # self.log_z = np.log(actual_z / target_z)
-        # self.sin_z = np.sin(actual_z / target_z * np.pi/2)
+        
+        # Set euclidean distance
         diff_pose = (self.sim.pose[:3] - self.target_pos)**2
         self.euclidean_distance = np.sqrt(diff_pose.sum())
         
         # Starter reward for smaller euclidean distance
-        # reward = (1 - self.euclidean_distance / 150)
-        reward = 2.0 * np.tanh(3 - self.euclidean_distance / 50)
+        reward = 1.5 * np.tanh(2 - self.euclidean_distance / 50)
+        # reward = np.tanh(1.0 - 0.003*(abs(self.sim.pose[:3] - self.target_pos)).sum())
+        
         # Reward for velocity_Z growing
         reward += 0.4 * np.tanh(self.sim.v[2] / 10)
+        
         # Penalty if X is higher than absolute 1
         reward -= 0.5 * np.tanh(abs(actual_x/10))
+        
         # Penalty if Y is higher than absolute 1
         reward -= 0.5 * np.tanh(abs(actual_y/10))
+        
         # Reward if Z is higher than 0
         reward += 0.5 * np.tanh(actual_z/10)
         if actual_z < 5.0:
             reward -= 0.5
         else:
             reward += 0.5
-        # if self.before < self.after:
-        #     reward -= 1
-            
-        # reward = target_z - self.euclidean_distance
-        # if self.before < self.after:
-        #     reward -= 25
-        # if actual_z < 5:
-        #     reward -= 25
-        # else:
-        #     reward += 25
             
         return reward
 
