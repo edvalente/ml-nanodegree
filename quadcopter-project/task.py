@@ -34,7 +34,7 @@ class Task():
         actual_pos = self.sim.pose[:3]
         actual_x, actual_y, actual_z = self.sim.pose[:3]
         target_x, target_y, target_z = self.target_pos
-        self.diff_x, self.diff_y, self.diff_z = abs(self.target_pos - self.sim.pose[:3])
+        # self.diff_x, self.diff_y, self.diff_z = abs(self.target_pos - self.sim.pose[:3])
         # self.sqrt_z = np.sqrt(actual_z / target_z)
         # self.pow_z = (actual_z / target_z) ** 2
         # self.log_z = np.log(actual_z / target_z)
@@ -75,9 +75,7 @@ class Task():
         reward = 0
         pose_all = []
         for _ in range(self.action_repeat):
-            self.before = self.sim.pose[2]
             done = self.sim.next_timestep(rotor_speeds) # update the sim pose and velocities
-            self.after = self.sim.pose[2]
             reward += self.get_reward() 
             pose_all.append(self.sim.pose)
         next_state = np.concatenate(pose_all)
